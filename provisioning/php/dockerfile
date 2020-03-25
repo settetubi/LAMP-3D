@@ -7,25 +7,12 @@ ARG PHP_USER_PASSWORD
 
 COPY www.conf ${PHP_ROOT_DIR}/php-fpm.d/www.conf
 
-# RUN apt update && \
-# apt -y upgrade && docker-php-ext-install pdo pdo_mysql mbstring
-
 RUN apk update && apk upgrade
 RUN docker-php-ext-install pdo pdo_mysql mbstring mysqli 
-# RUN bash bash-completion
 
-# RUN apt -y update 
-# RUN apt install -y net-tools iputils-ping nmap wget nano network-manager
-# RUN apt install -y apt-utils openssl libzip-dev zip unzip mysql-client
 RUN apk add nmap wget nano
 RUN apk add openssl libzip-dev zip unzip mysql-client shadow bash
 RUN usermod -u 1000 ${PHP_USERNAME}
-# RUN apk openssh openrc
-# RUN rc-update add sshd
-# RUN useradd -G ${WEB_GROUP} -p ${PHP_USER_PASSWORD} --create-home --shell /bin/bash ${PHP_USERNAME}
-# RUN addgroup ${PHP_USERNAME} ${WEB_GROUP}
-
-# RUN chgrp -R staff /usr/local/etc/php-fpm.d/www.conf
 
 USER ${PHP_USERNAME}
 RUN \

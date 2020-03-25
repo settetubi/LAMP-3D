@@ -2,3 +2,4 @@ applications/*
 provisioning/logs/
 provisioning/mysql/mysql_working_dir/
 .env
+provisioning/web/mysql_pubkey.asc
