@@ -1,0 +1,4 @@
+applications/*
+provisioning/logs/
+provisioning/mysql/mysql_working_dir/
+.env

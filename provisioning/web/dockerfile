@@ -1,0 +1,48 @@
+FROM httpd:2.4.41-alpine 
+
+# COPY ./test.conf /etc/apache2/sites-available/test.docker.loc.conf
+# COPY ./dev.conf /etc/apache2/sites-available/dev.docker.loc.conf
+
+# COPY ./web.conf /usr/local/apache2/conf/dev.docker.loc.conf
+# RUN echo "Include /usr/local/apache2/conf/dev.docker.loc.conf" \
+#     >> /usr/local/apache2/conf/httpd.conf
+
+# COPY ./mysql_pubkey.asc mysql_pubkey.asc
+
+# RUN apt-key add mysql_pubkey.asc      
+# RUN echo "deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-tools" >> /etc/apt/sources.list.d/mysql.list
+
+# RUN apt -y update 
+# RUN apt install -y net-tools iputils-ping 
+# RUN apt install -y apt-utils openssl libzip-dev zip unzip mysql-client
+
+# RUN a2ensite test.docker.loc.conf && \
+# a2ensite restfulapi.docker.loc.conf 
+# useradd -G www-data -p pippogne --create-home --shell /bin/bash djeembo
+
+ARG WEB_USER
+ARG WEB_GROUP
+ARG APACHE_EXPOSED_PORT
+ARG APACHE_ROOT_DIR
+ARG PHP_APP_DIR
+ARG SERVER_NAME
+ARG PHP_CONTAINER_NAME
+
+#COPY web.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf
+COPY httpd.conf /usr/local/apache2/conf/httpd.conf
+
+RUN apk update && apk upgrade 
+
+RUN apk add \
+mysql-client nmap wget nano openssl libzip-dev zip unzip shadow 
+
+RUN \
+usermod -u 1000 ${WEB_USER} && \
+groupmod -g 1000 ${WEB_GROUP} && \
+chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}
+
+RUN chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}/conf/httpd.conf && \
+    chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}/conf/extra/httpd-vhosts.conf
+
+RUN alias ll="ls -al"
+
