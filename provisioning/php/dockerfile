@@ -23,3 +23,5 @@ php -r "unlink('composer-setup.php');"
 
 USER root
 RUN mv composer.phar /usr/local/bin/composer
+
+USER www-data
