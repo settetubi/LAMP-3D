@@ -5,10 +5,10 @@ services:
   ## web server apache alpine
   ######
   web:
-    container_name: apache
+    container_name: ${APACHE_CONTAINER_NAME}
     # image: apache-dj
     build:
-      context: ./web
+      context: ./provisioning/web
       args:
         - WEB_USER=${WEB_USER}
         - WEB_GROUP=${WEB_GROUP}
@@ -16,9 +16,9 @@ services:
     ports:
       - ${APACHE_EXPOSED_PORT}:80
     volumes:
-      - ../applications/:${APACHE_ROOT_DIR}/htdocs
-      - ./logs/web/:${APACHE_ROOT_DIR}/logs
-      - ./web/web.conf:${APACHE_ROOT_DIR}/conf/extra/httpd-vhosts.conf
+      - ./applications/:${APACHE_ROOT_DIR}/htdocs
+      - ./provisioning/logs/web/:${APACHE_ROOT_DIR}/logs
+      - ./provisioning/web/web.conf:${APACHE_ROOT_DIR}/conf/extra/httpd-vhosts.conf
     networks: 
       - frontend
       - backend
@@ -41,15 +41,15 @@ services:
     container_name: ${PHP_CONTAINER_NAME}
     # image: php-dj
     build:
-      context: ./php
+      context: ./provisioning/php
       args:
         - WEB_GROUP=${WEB_GROUP}
         - PHP_ROOT_DIR=${PHP_ROOT_DIR}
         - PHP_USERNAME=${PHP_USERNAME}
         - PHP_USER_PASSWORD=${PHP_USER_PASSWORD}
     volumes:
-      - ./../applications/:${PHP_APP_DIR}
-      - ./logs/php/:${PHP_ROOT_DIR}/logs
+      - ./applications/:${PHP_APP_DIR}
+      - ./provisioning/logs/php/:${PHP_ROOT_DIR}/logs
     networks: 
       - backend
     working_dir: ${PHP_APP_DIR}
@@ -59,10 +59,10 @@ services:
   ## mysql 5.7 
   #################
   mysql:
-    container_name: mys57
+    container_name: ${MYSQL_CONTAINER_NAME}
     # image: mysql-dj
     build:
-      context: ./mysql
+      context: ./provisioning/mysql
       args:
         - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
         - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
@@ -73,10 +73,10 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - ./logs/mysql/:${MYSQL_LOG_DIR}
-      - ./mysql/my.cnf.j2:/etc/mysql/mysql.conf.d/mysqld.cnf
-      - ./mysql/dumps/:/docker-entrypoint-initdb.d
-      - ./mysql/mysql_working_dir/:/var/lib/mysql
+      - ./provisioning/logs/mysql/:${MYSQL_LOG_DIR}
+      - ./provisioning/mysql/my.cnf.j2:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - ./provisioning/mysql/dumps/:/docker-entrypoint-initdb.d
+      - ./provisioning/mysql/mysql_working_dir/:/var/lib/mysql
     networks: 
       - backend
 

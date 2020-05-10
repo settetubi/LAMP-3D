@@ -1,5 +1,8 @@
 applications/*
 provisioning/logs/
 provisioning/mysql/mysql_working_dir/
+provisioning/mysql/dumps/sql_operations.sql
 .env
 provisioning/web/mysql_pubkey.asc
+provisioning/web/web.conf
+.idea/*

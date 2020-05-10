@@ -1,4 +1,4 @@
-FROM mysql:5.7
+FROM mysql:5.7.27
 
 ARG MYSQL_CONTAINER_USER
 ARG MYSQL_CONTAINER_GROUP
@@ -6,6 +6,6 @@ ARG MYSQL_PASSWORD
 
 COPY ./my.cnf.j2 /etc/mysql/my.cnf
 
-RUN apt update && apt install -y net-tools iputils-ping nmap network-manager nano wget git-sh && \\
+RUN apt update && apt install -y dnsutils iputils-ping nmap network-manager nano wget && \\
 usermod -u 1000 ${MYSQL_CONTAINER_USER} && groupmod -g 1000 ${MYSQL_CONTAINER_GROUP}
 

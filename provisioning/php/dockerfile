@@ -12,8 +12,8 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring mysqli
 
 RUN apk add nmap wget nano
 RUN apk add openssl libzip-dev zip unzip mysql-client shadow bash
-RUN usermod -u ${HOST_USER_ID} ${PHP_USERNAME}
-RUN groupmod -g ${HOST_GROUP_ID} ${PHP_USERNAME}
+RUN usermod -u 1000 ${PHP_USERNAME}
+RUN groupmod -g 1000 ${PHP_USERNAME}
 
 USER ${PHP_USERNAME}
 RUN \
